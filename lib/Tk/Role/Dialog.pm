@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 package Tk::Role::Dialog;
-# ABSTRACT: moose role for enhanced dialogs
+# ABSTRACT: moose role for enhanced tk dialogs
 
 use Moose::Role 0.92;
 use MooseX::Has::Sugar;
