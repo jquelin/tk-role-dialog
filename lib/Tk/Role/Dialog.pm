@@ -8,6 +8,8 @@ package Tk::Role::Dialog;
 use Moose::Role 0.92;
 use MooseX::Has::Sugar;
 use Tk;
+use Tk::JPEG;
+use Tk::PNG;
 use Tk::Sugar;
 
 
@@ -16,6 +18,10 @@ use Tk::Sugar;
 =attr parent
 
 The parent window of the dialog, required.
+
+=attr icon
+
+The path to an image to be used as dialog icon. No default, but not required.
 
 =attr title
 
@@ -45,6 +51,7 @@ close the dialog.
 =cut
 
 has parent    => ( ro, required, weak_ref, isa=>'Tk::Widget' );
+has icon      => ( ro, lazy_build, isa=>'Str' );
 has title     => ( ro, lazy_build, isa=>'Str' );
 has header    => ( ro, lazy_build, isa=>'Str' );
 has resizable => ( ro, lazy_build, isa=>'Bool' );
@@ -70,6 +77,7 @@ has _widgets => (
 
 # those are defaults for the role public attributes
 sub _build_title     { 'tk dialog' }
+sub _build_icon      { '' }
 sub _build_header    { '' }
 sub _build_resizable { 0 }
 sub _build_ok        { '' }
@@ -125,7 +133,10 @@ sub _build_dialog {
 
     # window title
     $top->title( $self->title );
-    #$top->iconimage( pandemic_icon($top) );
+    if ( $self->icon ) {
+        my $icon = $top->Photo( -file => $self->icon );
+        $top->iconimage( $icon );
+    }
 
     # dialog name
     if ( $self->header ) {
@@ -196,6 +207,7 @@ __END__
     with 'Tk::Role::Dialog';
 
     sub _build_title     { 'window title' }
+    sub _build_icon      { '/path/to/some/icon.png' }
     sub _build_header    { 'big dialog header' }
     sub _build_resizable { 0 }
     sub _build_ok        { 'frobnize' }     # call $self->_valid
