@@ -2,6 +2,9 @@ Revision history for Tk::Role::Dialog.
 
 {{$NEXT}}
 
+1.101392  2010-05-19 16:42:42 Europe/Paris
+ - support for transparent icons
+
 1.101391  2010-05-19 14:56:53 Europe/Paris
  - support for simple dialog boxes (text + image)
 
