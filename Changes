@@ -2,7 +2,11 @@ Revision history for Tk::Role::Dialog.
 
 {{$NEXT}}
 
+1.101390  2010-05-19 10:19:06 Europe/Paris
+ - provide a frame to hold alien widgets
+
 1.101381  2010-05-18 19:15:51 Europe/Paris
+ - pod update
 
 1.101380  2010-05-18 19:11:38 Europe/Paris
  - original version
