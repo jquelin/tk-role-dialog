@@ -2,6 +2,9 @@ Revision history for Tk::Role::Dialog.
 
 {{$NEXT}}
 
+1.101391  2010-05-19 14:56:53 Europe/Paris
+ - support for simple dialog boxes (text + image)
+
 1.101390  2010-05-19 10:19:06 Europe/Paris
  - provide a frame to hold alien widgets
 
