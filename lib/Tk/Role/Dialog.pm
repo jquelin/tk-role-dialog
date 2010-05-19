@@ -150,7 +150,10 @@ sub _build_dialog {
     }
 
     # build inner gui elements
-    $self->_build_gui() if $self->can( '_build_gui' );
+    if ( $self->can( '_build_gui' ) ) {
+        my $f = $top->Frame->pack(top,xfill2);
+        $self->_build_gui($f);
+    }
 
     # the dialog buttons.
     # note that we specify a bogus width in order for both buttons to be
@@ -214,7 +217,8 @@ __END__
     sub _build_cancel    { 'close' }        # close the window
 
     sub _build_gui {
-        # build the inner dialog widgets
+        my ($self, $frame) = @_;
+        # build the inner dialog widgets in the $frame
     }
     sub _valid {
         # called when user clicked the 'ok' button
@@ -235,6 +239,10 @@ composed for easy L<Tk> dialogs creation.
 
 It will create a new toplevel with a title, and possibly a header as
 well as some buttons.
+
+One can create the middle part of the dialog by providing a
+C<_build_gui()> method, that will receive a L<Tk::Frame> where widgets
+are supposed to be placed.
 
 The attributes (see below) can be either defined as defaults using the
 C<_build_attr()> methods, or passed arguments to the constructor call.
