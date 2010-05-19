@@ -21,16 +21,30 @@ The parent window of the dialog, required.
 
 =attr icon
 
-The path to an image to be used as dialog icon. No default, but not required.
+The path to an image to be used as window icon. Default to empty string
+(meaning no customized window icon), but not required.
 
 =attr title
 
-The dialog title, default to C<tk dialog>
+The dialog title, default to C<tk dialog>.
 
 =attr header
 
 A header (string) to display at the top of the window. Default to empty
 string, meaning no header.
+
+=attr image
+
+The path to an image to be displayed alongside the dialog text. Not
+taken into account if C<text> attribute is empty. Default to empty
+string, meaning no image.
+
+=attr text
+
+Some text to be displayed, for simple information dialog boxes. Default
+to empty string, meaning dialog is to be filled by providing a
+C<_build_gui()> method. Can be combined with an C<image> attribute for
+enhanced appearance.
 
 =attr resizable
 
@@ -54,6 +68,8 @@ has parent    => ( ro, required, weak_ref, isa=>'Tk::Widget' );
 has icon      => ( ro, lazy_build, isa=>'Str' );
 has title     => ( ro, lazy_build, isa=>'Str' );
 has header    => ( ro, lazy_build, isa=>'Str' );
+has text      => ( ro, lazy_build, isa=>'Str' );
+has image     => ( ro, lazy_build, isa=>'Str' );
 has resizable => ( ro, lazy_build, isa=>'Bool' );
 has ok        => ( ro, lazy_build, isa=>'Str' );
 has cancel    => ( ro, lazy_build, isa=>'Str' );
@@ -79,6 +95,8 @@ has _widgets => (
 sub _build_title     { 'tk dialog' }
 sub _build_icon      { '' }
 sub _build_header    { '' }
+sub _build_image     { '' }
+sub _build_text      { '' }
 sub _build_resizable { 0 }
 sub _build_ok        { '' }
 sub _build_cancel    { '' }
@@ -148,6 +166,18 @@ sub _build_dialog {
     }
 
     # build inner gui elements
+    if ( $self->text ) {
+        my $f = $top->Frame->pack(top, xfill2);
+        if ( $self->image ) {
+            my $image = $top->Photo( -file => $self->image );
+            $f->Label(-image => $image)->pack(left, fill2, pad10);
+        }
+        $f->Label(
+            -text       => $self->text,
+            -justify    => 'left',
+            -wraplength => '8c',
+        )->pack(left, fill2, pad10);
+    }
     if ( $self->can( '_build_gui' ) ) {
         my $f = $top->Frame->pack(top,xfill2);
         $self->_build_gui($f);
