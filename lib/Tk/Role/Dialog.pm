@@ -131,8 +131,6 @@ sub _build_dialog {
     my $top = $self->_toplevel;
     $top->withdraw;
 
-    # window title
-    $top->title( $self->title );
     if ( $self->icon ) {
         my $icon = $top->Photo( -file => $self->icon );
         $top->iconimage( $icon );
@@ -181,6 +179,11 @@ sub _build_dialog {
         $top->bind('<Escape>', sub { $self->close });
         $top->bind('<Return>', sub { $self->close }) unless $self->ok;
     }
+
+    # window title
+    # this should come at the end, since some widgets (i'm looking at
+    # you tk::pod::text!) change the window title - tsk!
+    $top->title( $self->title );
 
     # center window & make it appear
     $top->Popup( -popover => $self->parent );
