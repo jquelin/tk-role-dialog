@@ -5,9 +5,10 @@ use warnings;
 package Tk::Role::Dialog;
 # ABSTRACT: moose role for enhanced tk dialogs
 
-use File::Basename qw{ fileparse };
+use File::Basename             qw{ fileparse };
 use Moose::Role 0.92;
 use MooseX::Has::Sugar;
+use MooseX::Types::Path::Class qw{ File };
 use Tk;
 use Tk::JPEG;
 use Tk::PNG;
@@ -73,7 +74,7 @@ hide the dialog (think C<withdraw>).
 =cut
 
 has parent    => ( ro, required, weak_ref, isa=>'Tk::Widget' );
-has icon      => ( ro, lazy_build, isa=>'Str' );
+has icon      => ( ro, lazy_build, isa=>File, coerce );
 has title     => ( ro, lazy_build, isa=>'Str' );
 has header    => ( ro, lazy_build, isa=>'Str' );
 has text      => ( ro, lazy_build, isa=>'Str' );
