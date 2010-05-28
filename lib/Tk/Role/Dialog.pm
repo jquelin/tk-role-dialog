@@ -63,6 +63,13 @@ A string to display as cancellation button label. Default to empty
 string, meaning no cancellation button. The cancel action is to just
 close the dialog.
 
+=attr hide
+
+A string to display as hiding button label. Default to empty
+string, meaning no hiding button. The hiding action is to just
+hide the dialog (think C<withdraw>).
+
+
 =cut
 
 has parent    => ( ro, required, weak_ref, isa=>'Tk::Widget' );
@@ -74,6 +81,7 @@ has image     => ( ro, lazy_build, isa=>'Str' );
 has resizable => ( ro, lazy_build, isa=>'Bool' );
 has ok        => ( ro, lazy_build, isa=>'Str' );
 has cancel    => ( ro, lazy_build, isa=>'Str' );
+has hide      => ( ro, lazy_build, isa=>'Str' );
 
 has _toplevel => ( rw, lazy_build, isa=>'Tk::Toplevel' );
 
@@ -101,6 +109,7 @@ sub _build_text      { '' }
 sub _build_resizable { 0 }
 sub _build_ok        { '' }
 sub _build_cancel    { '' }
+sub _build_hide      { '' }
 
 sub _build__toplevel {
     my $self = shift;
@@ -203,6 +212,16 @@ sub _build_dialog {
         $self->_set_w('ok', $but);
         $top->bind('<Return>', sub { $self->_valid });
         $top->bind('<Escape>', sub { $self->_valid }) unless $self->cancel;
+    }
+    if ( $self->hide ) {
+        my $but = $fbuttons->Button(
+            -text    => $self->hide,
+            -width   => 10,
+            -command => sub { $top->withdraw },
+        )->pack(left, xfill2);
+        $self->_set_w('hide', $but);
+        $top->bind('<Return>', sub { $top->withdraw }) unless $self->ok;
+        $top->bind('<Escape>', sub { $top->withdraw }) unless $self->cancel;
     }
     if ( $self->cancel ) {
         my $but = $fbuttons->Button(
