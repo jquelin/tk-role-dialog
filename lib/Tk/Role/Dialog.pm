@@ -171,7 +171,7 @@ sub _build_dialog {
         my $icon = $top->Photo( -file => $self->icon );
         $top->iconimage( $icon );
         # transparent images have a xbm mask
-        my ($file, $path, $ext) = fileparse( $self->icon, qr/\.png/i );
+        my ($file, $path, undef) = fileparse( $self->icon, qr/\.png/i );
         my $mask = $path . "$file-mask.xbm";
         $top->iconmask( '@' . $mask ) if -f $mask;
     }
