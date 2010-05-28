@@ -2,6 +2,11 @@ Revision history for Tk::Role::Dialog.
 
 {{$NEXT}}
 
+1.101480  2010-05-28 15:05:55 Europe/Paris
+ - new attribute "hidden"
+ - support for "hide" action
+ - support path::class objects for icon attr
+
 1.101392  2010-05-19 16:42:42 Europe/Paris
  - support for transparent icons
 
