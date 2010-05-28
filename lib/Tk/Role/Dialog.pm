@@ -21,6 +21,11 @@ use Tk::Sugar;
 
 The parent window of the dialog, required.
 
+=attr hidden
+
+Whether the dialog should popup or stay hidden after creation. Default
+to false, which means the dialog is shown.
+
 =attr icon
 
 The path to an image to be used as window icon. Default to empty string
@@ -74,6 +79,7 @@ hide the dialog (think C<withdraw>).
 =cut
 
 has parent    => ( ro, required, weak_ref, isa=>'Tk::Widget' );
+has hidden    => ( ro, lazy_build, isa=>'Bool' );
 has icon      => ( ro, lazy_build, isa=>File, coerce );
 has title     => ( ro, lazy_build, isa=>'Str' );
 has header    => ( ro, lazy_build, isa=>'Str' );
@@ -102,6 +108,7 @@ has _widgets => (
 # -- initialization / finalization
 
 # those are defaults for the role public attributes
+sub _build_hidden    { 0 }
 sub _build_title     { 'tk dialog' }
 sub _build_icon      { '' }
 sub _build_header    { '' }
@@ -241,7 +248,7 @@ sub _build_dialog {
     $top->title( $self->title );
 
     # center window & make it appear
-    $top->Popup( -popover => $self->parent );
+    $top->Popup( -popover => $self->parent ) unless $self->hidden;
     if ( $self->resizable ) {
         $top->minsize($top->width, $top->height);
     } else {
