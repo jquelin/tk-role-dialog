@@ -1,8 +1,19 @@
+#
+# This file is part of Tk-Role-Dialog
+#
+# This software is copyright (c) 2010 by Jerome Quelin.
+#
+# This is free software; you can redistribute it and/or modify it under
+# the same terms as the Perl 5 programming language system itself.
+#
 use 5.010;
 use strict;
 use warnings;
 
 package Tk::Role::Dialog;
+{
+  $Tk::Role::Dialog::VERSION = '1.112380';
+}
 # ABSTRACT: moose role for enhanced tk dialogs
 
 use File::Basename             qw{ fileparse };
@@ -19,66 +30,6 @@ with 'Tk::Role::HasWidgets' => { -version => 1.112380 }; # _clear_w
 
 # -- accessors
 
-=attr parent
-
-The parent window of the dialog, required.
-
-=attr hidden
-
-Whether the dialog should popup or stay hidden after creation. Default
-to false, which means the dialog is shown.
-
-=attr icon
-
-The path to an image to be used as window icon. Default to empty string
-(meaning no customized window icon), but not required.
-
-=attr title
-
-The dialog title, default to C<tk dialog>.
-
-=attr header
-
-A header (string) to display at the top of the window. Default to empty
-string, meaning no header.
-
-=attr image
-
-The path to an image to be displayed alongside the dialog text. Not
-taken into account if C<text> attribute is empty. Default to empty
-string, meaning no image.
-
-=attr text
-
-Some text to be displayed, for simple information dialog boxes. Default
-to empty string, meaning dialog is to be filled by providing a
-C<_build_gui()> method. Can be combined with an C<image> attribute for
-enhanced appearance.
-
-=attr resizable
-
-A boolean to control whether the dialog can be resized or not (default).
-
-=attr ok
-
-A string to display as validation button label. Default to empty string,
-meaning no validation button. The validation action will call
-C<< $self->_valid() >>.
-
-=attr cancel
-
-A string to display as cancellation button label. Default to empty
-string, meaning no cancellation button. The cancel action is to just
-close the dialog.
-
-=attr hide
-
-A string to display as hiding button label. Default to empty
-string, meaning no hiding button. The hiding action is to just
-hide the dialog (think C<withdraw>).
-
-
-=cut
 
 has parent    => ( ro, required, weak_ref, isa=>'Tk::Widget' );
 has hidden    => ( ro, lazy_build, isa=>'Bool' );
@@ -131,13 +82,6 @@ after BUILD => sub {
 
 # -- gui methods
 
-=method close
-
-    $dialog->close;
-
-Request to destroy the dialog.
-
-=cut
 
 sub close {
     my $self = shift;
@@ -252,11 +196,17 @@ sub _build_dialog {
 
 no Moose::Role;
 1;
-__END__
 
-=for Pod::Coverage
-    BUILD
-    DEMOLISH
+
+=pod
+
+=head1 NAME
+
+Tk::Role::Dialog - moose role for enhanced tk dialogs
+
+=head1 VERSION
+
+version 1.112380
 
 =head1 SYNOPSIS
 
@@ -287,7 +237,6 @@ __END__
     # create & show a new dialog
     Your::Tk::Dialog::Class->new( parent => $main_window );
 
-
 =head1 DESCRIPTION
 
 L<Tk::Role::Dialog> is meant to be used as a L<Moose> role to be
@@ -305,7 +254,76 @@ C<_build_attr()> methods, or passed arguments to the constructor call.
 The only mandatory attribute is C<parent>, but you'd better provide some
 other attributes if you want your dialog to be somehow usable! :-)
 
+=head1 ATTRIBUTES
 
+=head2 parent
+
+The parent window of the dialog, required.
+
+=head2 hidden
+
+Whether the dialog should popup or stay hidden after creation. Default
+to false, which means the dialog is shown.
+
+=head2 icon
+
+The path to an image to be used as window icon. Default to empty string
+(meaning no customized window icon), but not required.
+
+=head2 title
+
+The dialog title, default to C<tk dialog>.
+
+=head2 header
+
+A header (string) to display at the top of the window. Default to empty
+string, meaning no header.
+
+=head2 image
+
+The path to an image to be displayed alongside the dialog text. Not
+taken into account if C<text> attribute is empty. Default to empty
+string, meaning no image.
+
+=head2 text
+
+Some text to be displayed, for simple information dialog boxes. Default
+to empty string, meaning dialog is to be filled by providing a
+C<_build_gui()> method. Can be combined with an C<image> attribute for
+enhanced appearance.
+
+=head2 resizable
+
+A boolean to control whether the dialog can be resized or not (default).
+
+=head2 ok
+
+A string to display as validation button label. Default to empty string,
+meaning no validation button. The validation action will call
+C<< $self->_valid() >>.
+
+=head2 cancel
+
+A string to display as cancellation button label. Default to empty
+string, meaning no cancellation button. The cancel action is to just
+close the dialog.
+
+=head2 hide
+
+A string to display as hiding button label. Default to empty
+string, meaning no hiding button. The hiding action is to just
+hide the dialog (think C<withdraw>).
+
+=head1 METHODS
+
+=head2 close
+
+    $dialog->close;
+
+Request to destroy the dialog.
+
+=for Pod::Coverage BUILD
+    DEMOLISH
 
 =head1 SEE ALSO
 
@@ -334,4 +352,20 @@ L<http://annocpan.org/dist/Tk-Role-Dialog>
 L<http://cpanratings.perl.org/d/Tk-Role-Dialog>
 
 =back
+
+=head1 AUTHOR
+
+Jerome Quelin
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2010 by Jerome Quelin.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
+
+
+__END__
 
