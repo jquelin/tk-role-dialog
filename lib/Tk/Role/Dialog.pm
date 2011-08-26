@@ -14,6 +14,8 @@ use Tk::JPEG;
 use Tk::PNG;
 use Tk::Sugar;
 
+with 'Tk::Role::HasWidgets' => { -version => 1.112380 }; # _clear_w
+
 
 # -- accessors
 
@@ -93,17 +95,6 @@ has hide      => ( ro, lazy_build, isa=>'Str' );
 has _toplevel => ( rw, lazy_build, isa=>'Tk::Toplevel' );
 
 
-# a hash to store the widgets for easier reference.
-has _widgets => (
-    ro,
-    traits  => ['Hash'],
-    isa     => 'HashRef',
-    default => sub { {} },
-    handles => {
-        _set_w => 'set',
-        _w     => 'get',
-    },
-);
 
 # -- initialization / finalization
 
